@@ -6,13 +6,23 @@ $ServerIP
 [int]$ServerCount
 [int]$SCounter = 0
 $DesktopLocation
+$DomainName
 
 $VPNName = Read-Host -Prompt 'What do you want to name VPN'
 $MerkiServer = Read-Host -Prompt 'Input DDNS Server address'
 $PerSharedKey = Read-Host -Prompt 'Please enter Preshared key'
 
+<#Get Domain Name for DNSSuffix on Line 25#>
+Try{
+  $DomainName = Read-Host -Prompt "Please enter Domain Name, Press enter skip"
+  }
+  Catch{
+    Write-Host "Process skipped"
+    }
+
+
 <#Adds Meraki VPN#>
-Add-VpnConnection -Name "$VPNName" -ServerAddress "$MerkiServer" -TunnelType "L2tp" -AuthenticationMethod pap -SplitTunneling -AllUserConnection -L2tpPsk $PerSharedKey -PassThru
+Add-VpnConnection -Name "$VPNName" -ServerAddress "$MerkiServer" -TunnelType "L2tp" -AuthenticationMethod pap  -L2tpPsk "$PerSharedKey" -DnsSuffix "$DomainName" -PassThru
 
 
 Try{
