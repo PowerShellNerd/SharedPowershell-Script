@@ -54,7 +54,8 @@ Do{
                     2{
                     $Policy = Read-Host -prompt "Enter name for Retention Policy"
                     $EmailUser = Read-Host -prompt "Enter Email Address"
-                    Enable-Mailbox -Identity $EmailUser -Archive 
+                    Enable-Mailbox -Identity $EmailUser -Archive
+                    $EmailUser = get-mailboxLocation –user $EmailUser | Select-Object -ExpandProperty mailboxGuid
                     Set-Mailbox $EmailUser -RetentionPolicy $Policy
                     Start-ManagedFolderAssistant –Identity $EmailUser
                     $ReSelect = Read-Host -Prompt "Would you like to make other selection?"
@@ -79,6 +80,7 @@ Do{
 
                     5{
                     $EmailUser = Read-Host "Enter Email Address"
+                    $EmailUser = get-mailboxLocation –user $EmailUser | Select-Object -ExpandProperty mailboxGuid
                     Start-ManagedFolderAssistant –Identity $EmailUser
                     $ReSelect = Read-Host -Prompt "Would you like to make other selection?"
                     RePrompt
